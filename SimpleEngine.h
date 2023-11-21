@@ -35,6 +35,7 @@ public:
 		return Instance;
 	}
 
+	static int KeyCode;
 
 protected:
 	bool bIsRunning;
@@ -42,7 +43,7 @@ protected:
 	static FSimpleEngine* Instance;
 
 	int input();
-	void Tick(int KeyCode);
+	void Tick();
 	void Render();
 
 private:

@@ -11,7 +11,7 @@ public:
 	~AActor();
 
 	virtual void BeginePlay();
-	virtual void Tick(int KeyCode);
+	virtual void Tick();
 	virtual void Render();
 
 	inline int GetX() const { return X; }

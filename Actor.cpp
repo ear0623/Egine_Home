@@ -44,7 +44,7 @@ void AActor::BeginePlay()
 {
 }
 
-void AActor::Tick(int KeyCode)
+void AActor::Tick()
 {
 }
 

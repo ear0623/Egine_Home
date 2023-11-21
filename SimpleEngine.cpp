@@ -10,6 +10,7 @@
 #include <iostream>
 
 FSimpleEngine* FSimpleEngine::Instance = nullptr;
+int FSimpleEngine::KeyCode = 0;
 
 FSimpleEngine::~FSimpleEngine()
 {
@@ -26,8 +27,8 @@ void FSimpleEngine::Run()
 {
 	while (bIsRunning)
 	{
-		int KeyCode = input();
-		Tick(KeyCode);
+		input();
+		Tick();
 		system("cls");
 		Render();
 	}
@@ -100,9 +101,9 @@ int FSimpleEngine::input()
 	return keyCode;
 }
 
-void FSimpleEngine::Tick(int KeyCode)
+void FSimpleEngine::Tick()
 {
-	GetWorld()->Tick(KeyCode);
+	GetWorld()->Tick();
 }
 
 void FSimpleEngine::Render()

@@ -14,7 +14,7 @@ public:
 	APlayer(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide);
 	~APlayer();
 
-	virtual void Tick(int KeyCode) override;
+	virtual void Tick() override;
 	bool IsCollide(int NewX, int NewY);
 
 	

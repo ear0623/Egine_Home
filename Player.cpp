@@ -45,9 +45,10 @@ APlayer::~APlayer()
 {
 }
 
-void APlayer::Tick(int KeyCode)
+void APlayer::Tick()
 {
-	__super::Tick(KeyCode);
+	__super::Tick();
+	int KeyCode = FSimpleEngine::KeyCode;
 
 	if (KeyCode == 'A' || KeyCode == 'a')
 	{

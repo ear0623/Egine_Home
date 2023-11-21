@@ -4,7 +4,7 @@ int main()
 {
 	FSimpleEngine* MyEngine = FSimpleEngine::GetInstance();
 
-	MyEngine->LoadLevel("D:\\ETERBUS\\etaproject\\Engine\\Engine\\Map\\BMap.txt");
+	MyEngine->LoadLevel("C:\\Work\\L20231121Home\\Egine_Home\\MapAmap.txt");
 	MyEngine->Run();
 
 	delete MyEngine;

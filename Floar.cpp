@@ -22,7 +22,7 @@ AFloar::AFloar(int NewX, int NewY, char NewShape)
 	Shape = NewShape;
 }
 
-AFloar::AFloar(int NewX, int NewY, char NewShape, int NewSortOrder)
+AFloar::AFloar(int NewX, int NewY, char NewShape, int NewSortOrder)//알아서 생략되니까 지금처럼 다 적을 필요 없음
 {
 	SetX(NewX);
 	SetY(NewY);
