@@ -50,7 +50,7 @@ protected:
 	 AGameMode* GameMode;
 	AGameState* GameState;
 
-	int input();
+	void input();
 	void Tick();
 	void Render();
 

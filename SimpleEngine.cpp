@@ -93,7 +93,7 @@ void FSimpleEngine::LoadLevel(std::string FileName)
 			}
 			else if (Map[Y][X] == 'G')
 			{
-				GetWorld()->SpawnActor(new AGoal(X, Y,'G',300,true));
+				GetWorld()->SpawnActor(new AGoal(X, Y,'G',300,false));
 				//floor
 			}
 		}
@@ -106,11 +106,9 @@ void FSimpleEngine::LoadLevel(std::string FileName)
 	GetWorld()->SpawnActor(GameState);
 }
 
-int FSimpleEngine::input()
+void FSimpleEngine::input()
 {
-	int keyCode = _getch();
-
-	return keyCode;
+	KeyCode = _getch();
 }
 
 void FSimpleEngine::Tick()
