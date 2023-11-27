@@ -1,10 +1,11 @@
 #include "SimpleEngine.h"
+#include "string"
 
 int main()
 {
 	FSimpleEngine* MyEngine = FSimpleEngine::GetInstance();
 
-	MyEngine->LoadLevel("C:\\Work\\L20231121Home\\Egine_Home\\MapAmap.txt");
+	MyEngine->LoadLevel("a.map");
 	MyEngine->Run();
 
 	delete MyEngine;

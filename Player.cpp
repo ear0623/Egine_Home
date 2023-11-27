@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "SimpleEngine.h"
 #include "World.h"
+#include "Goal.h"
+#include "GameState.h"
 
 APlayer::APlayer()
 {
@@ -57,6 +59,7 @@ void APlayer::Tick()
 			X--;
 		}
 
+
 	}
 	if (KeyCode == 'D' || KeyCode == 'd')
 	{
@@ -64,7 +67,7 @@ void APlayer::Tick()
 		{
 			X++;
 		}
-
+		
 	}
 	if (KeyCode == 'S' || KeyCode == 's')
 	{
@@ -82,11 +85,16 @@ void APlayer::Tick()
 		}
 
 	}
-	else
+
+	AGoal* MyGoal = nullptr;
+	for (const auto& Actor : GENGINE->GetWorld()->GetAllactors())
 	{
-
+		MyGoal = dynamic_cast<AGoal*>(Actor);
+		if (MyGoal && MyGoal->GetX() == X && MyGoal->GetY() == Y)
+		{
+			FSimpleEngine::GetGamestate()->IsNextLevel = true;
+		}
 	}
-
 }
 
 bool APlayer::IsCollide(int NewX, int NewY)

@@ -3,9 +3,14 @@
 #include<vector>
 #include<string>
 
+
 #define GENGINE FSimpleEngine::GetInstance()
 
 class UWorld;
+class AActor;
+class AGameMode;
+class AGameState;
+
 
 class FSimpleEngine
 {
@@ -36,11 +41,14 @@ public:
 	}
 
 	static int KeyCode;
-
+	static AGameState* GetGamestate() { return GetInstance()->GameState; }
+	static AGameMode* GetGameMode() { return GetInstance()->GameMode; }
 protected:
 	bool bIsRunning;
 	UWorld* World;
 	static FSimpleEngine* Instance;
+	 AGameMode* GameMode;
+	AGameState* GameState;
 
 	int input();
 	void Tick();

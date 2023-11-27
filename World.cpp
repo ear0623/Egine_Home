@@ -8,6 +8,11 @@ UWorld::UWorld()
 
 UWorld::~UWorld()
 {
+	for (auto Actor : Actors)
+	{
+		delete Actor;
+	}
+	Actors.clear();//엔진은 월드에서만 책임져준다.
 }
 
 void UWorld::SpawnActor(AActor* NewActor)

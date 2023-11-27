@@ -12,8 +12,18 @@ public:
 	AMonster(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide);
 	virtual ~AMonster();
 
+	virtual void Tick() override;
+	bool IsCollide(int NewX, int NewY);
 protected:
 
 private:
 };
 
+
+enum class EMonsterDirection
+{
+	Left = 0,
+	Right = 1,
+	Down = 2,
+	Up = 3,
+};

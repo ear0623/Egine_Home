@@ -8,6 +8,8 @@
 #include "Monster.h"
 #include <fstream>
 #include <iostream>
+#include "GameMode.h"
+#include "GameState.h"
 
 FSimpleEngine* FSimpleEngine::Instance = nullptr;
 int FSimpleEngine::KeyCode = 0;
@@ -19,6 +21,7 @@ FSimpleEngine::~FSimpleEngine()
 
 void FSimpleEngine::Init()
 {
+	
 	bIsRunning = true;
 	World = new UWorld();
 }
@@ -37,32 +40,38 @@ void FSimpleEngine::Run()
 void FSimpleEngine::Stop()
 {
 	bIsRunning = false;
-	delete World;
+	
 }
 
 void FSimpleEngine::Term()
 {
-
+	GameMode = nullptr;
+	delete World;
+	GameState = nullptr;
+	bIsRunning = false;
 }
 
 void FSimpleEngine::LoadLevel(std::string FileName)
 {
-	std::ifstream Mapfile(FileName);
-	if (!Mapfile.is_open())
-	{
-		std::cout << "MapFile Is not Vaild" << std::endl;
-		return;//return 1로 반환하고싶음
-	}
-	std::string Map[10];
-	for (int Y = 0; Y < 10; ++Y)
-	{
-		std::getline(Mapfile, Map[Y]);
-	}
-	Mapfile.close();
+	
+	std::string Map[10] = {
+			"****************",
+			"*P				*",
+			"*				*",
+			"*				*",
+			"*     M		*",
+			"*				*",
+			"*				*",
+			"*       G		*",
+			"* M			*",
+			"****************"
+	};
+	
+	
 	
 	for (int Y = 0; Y < 10; ++Y)
 	{
-		for (int X = 0; X < 10; ++X)
+		for (int X = 0; X < Map[Y].length(); ++X)
 		{
 			if (Map[Y][X] == '*')
 			{
@@ -70,15 +79,16 @@ void FSimpleEngine::LoadLevel(std::string FileName)
 			}
 			else if (Map[Y][X] == ' ')
 			{
+				GetWorld()->SpawnActor(new AFloar(X, Y, ' ', 0, false));
 				//floor
 			}
 			else if (Map[Y][X] == 'P')
 			{
-				GetWorld()->SpawnActor(new APlayer(X, Y,'P',500));
+				GetWorld()->SpawnActor(new APlayer(X, Y,'P',500, false));
 			}
 			else if (Map[Y][X] == 'M')
 			{
-				GetWorld()->SpawnActor(new AMonster(X, Y,'M',400));
+				GetWorld()->SpawnActor(new AMonster(X, Y,'M',400,false));
 				//fllor
 			}
 			else if (Map[Y][X] == 'G')
@@ -86,12 +96,14 @@ void FSimpleEngine::LoadLevel(std::string FileName)
 				GetWorld()->SpawnActor(new AGoal(X, Y,'G',300,true));
 				//floor
 			}
-			GetWorld()->SpawnActor(new AFloar(X, Y));
 		}
 	}
-
 	GetWorld()->SortRenderOrder();
 
+	GameMode = new AGameMode();
+	GetWorld()->SpawnActor(GameMode);
+	GameState = new AGameState();
+	GetWorld()->SpawnActor(GameState);
 }
 
 int FSimpleEngine::input()
@@ -113,5 +125,7 @@ void FSimpleEngine::Render()
 
 FSimpleEngine::FSimpleEngine()
 {
+	GameMode = nullptr;
+	GameState = nullptr;
 	Init();
 }
