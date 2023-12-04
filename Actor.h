@@ -1,4 +1,6 @@
 #pragma once
+#include "SDL.h"
+#include <iostream>
 
 class AActor
 {
@@ -7,7 +9,7 @@ public:
 	AActor(int NewX, int NewY);
 	AActor(int NewX, int NewY, char NewShape);
 	AActor(int NewX, int NewY, char NewShape, int NewSortOrder);
-	AActor(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide);
+	AActor(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide, SDL_Color NewColor = SDL_Color{ 255,0,0,0 }, Uint8 size =32);
 	~AActor();
 
 	virtual void BeginePlay();
@@ -28,7 +30,16 @@ public:
 
 	virtual bool operator<(const AActor& RHS)const { return this->SortOrder < RHS.SortOrder; }
 	
-	
+	SDL_Color color;
+	Uint8 Size;
+	SDL_Surface* MySurface;
+	virtual void LoadBmp(std::string FileName, SDL_Color ColorKey=SDL_Color{255,255,255,0});
+	SDL_Texture* MyTexture;
+	bool bIsSprite;
+	int SprintSizeX;
+	int SprintSizeY;
+	int animation;
+
 
 protected:
 	int X;
@@ -37,6 +48,7 @@ protected:
 	int SortOrder;
 	bool bCollide;
 	char Shape;
+	
 
 private:
 

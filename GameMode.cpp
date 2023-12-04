@@ -36,3 +36,4 @@ void AGameMode::Tick()
 void AGameMode::Render()
 {
 }
+

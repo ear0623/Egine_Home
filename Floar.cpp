@@ -7,12 +7,17 @@ AFloar::AFloar()
 	Shape = ' ';
 	SortOrder = 0;
 	bCollide = false;
+	color = { 0,0,0,0 };
+	Size = 32;
+	LoadBmp("Data/Coin.bmp");
+	
 }
 
 AFloar::AFloar(int NewX, int NewY)
 {
 	SetX(NewX);
 	SetY(NewY);
+	LoadBmp("Data/floor.bmp");
 }
 
 AFloar::AFloar(int NewX, int NewY, char NewShape)
@@ -20,6 +25,7 @@ AFloar::AFloar(int NewX, int NewY, char NewShape)
 	SetX(NewX);
 	SetY(NewY);
 	Shape = NewShape;
+	LoadBmp("Data/floor.bmp");
 }
 
 AFloar::AFloar(int NewX, int NewY, char NewShape, int NewSortOrder)//알아서 생략되니까 지금처럼 다 적을 필요 없음
@@ -28,15 +34,19 @@ AFloar::AFloar(int NewX, int NewY, char NewShape, int NewSortOrder)//알아서 생략
 	SetY(NewY);
 	Shape = NewShape;
 	SortOrder = NewSortOrder;
+	LoadBmp("Data/floor.bmp");
 }
 
-AFloar::AFloar(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide)
+AFloar::AFloar(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide, SDL_Color NewColor, Uint8 size)
 {
 	SetX(NewX);
 	SetY(NewY);
 	Shape = NewShape;
-	SortOrder = NewSortOrder;
-	bCollide = NewbCollide;
+	SetSortOrder(NewSortOrder);
+	SetCollide(NewbCollide);
+	color = NewColor;
+	Size = size;
+	LoadBmp("Data/floor.bmp");
 }
 
 AFloar::~AFloar()

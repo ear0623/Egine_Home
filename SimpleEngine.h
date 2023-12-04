@@ -47,6 +47,7 @@ public:
 	static SDL_Keycode KeyCode;
 	static AGameState* GetGamestate() { return GetInstance()->GameState; }
 	static AGameMode* GetGameMode() { return GetInstance()->GameMode; }
+	static Uint64 GetWorldDeltaSecons(){return GetInstance()->DeltaSeconds;}
 
 	SDL_Window* MyWindow;
 	SDL_Renderer* MyRenderer;

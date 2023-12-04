@@ -8,15 +8,25 @@ APlayer::APlayer()
 {
 	X = 0;
 	Y = 0;
-	Shape = 'P';
-	SortOrder = 500;
+	Shape = ' ';
+	SortOrder = 0;
 	bCollide = false;
+	color = { 0,0,0,0 };
+	Size = 32;
+	LoadBmp("Data/Player.bmp", SDL_Color{ 255,0,255,0 });
+	bIsSprite = true;
+	SprintSizeX = 5;
+	SprintSizeY = 5;
 }
 
 APlayer::APlayer(int NewX, int NewY)
 {
 	SetX(NewX);
 	SetY(NewY);
+	LoadBmp("Data/Player.bmp", SDL_Color{ 255,0,255,0 });
+	bIsSprite = true;
+	SprintSizeX = 5;
+	SprintSizeY = 5;
 }
 
 APlayer::APlayer(int NewX, int NewY, char NewShape)
@@ -24,6 +34,10 @@ APlayer::APlayer(int NewX, int NewY, char NewShape)
 	SetX(NewX);
 	SetY(NewY);
 	Shape = NewShape;
+	LoadBmp("Data/Player.bmp", SDL_Color{ 255,0,255,0 });
+	bIsSprite = true;
+	SprintSizeX = 5;
+	SprintSizeY = 5;
 }
 
 APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder)
@@ -32,15 +46,25 @@ APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder)
 	SetY(NewY);
 	Shape = NewShape;
 	SetSortOrder(NewSortOrder);
+	LoadBmp("Data/Player.bmp",SDL_Color{255,0,255,0});
+	bIsSprite = true;
+	SprintSizeX = 5;
+	SprintSizeY = 5;
 }
 
-APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide)
+APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide, SDL_Color NewColor, Uint8 size)
 {
 	SetX(NewX);
 	SetY(NewY);
 	Shape = NewShape;
 	SetSortOrder(NewSortOrder);
 	SetCollide(NewbCollide);
+	color = NewColor;
+	Size = size;
+	LoadBmp("Data/Player.bmp", SDL_Color{ 255,0,255,0 });
+	bIsSprite = true;
+	SprintSizeX = 5;
+	SprintSizeY = 5;
 }
 
 APlayer::~APlayer()
@@ -50,7 +74,12 @@ APlayer::~APlayer()
 void APlayer::Tick()
 {
 	__super::Tick();
-	int KeyCode = FSimpleEngine::KeyCode;
+	int KeyCode = GENGINE->MyEvent.key.keysym.sym;
+	//KeyCode = MyEvent.key.keysym.sym;
+	if (GENGINE->MyEvent.type == SDL_KEYDOWN)
+	{
+		return;
+	}
 	if (FSimpleEngine::GetGamestate()->IsGameOver)
 	{
 		return;

@@ -10,16 +10,24 @@ AMonster::AMonster()
 {
 	X = 0;
 	Y = 0;
-	Shape = 'M';
-	SortOrder = 400;
+	Shape = ' ';
+	SortOrder = 0;
 	bCollide = false;
+	color = { 0,0,0,0 };
+	Size = 32;
 	srand((unsigned int)time(nullptr));
+	ProcessTime = 500;
+	ElaspedTime = 0;
+	LoadBmp("Data/Slime.bmp");
 }
 
 AMonster::AMonster(int NewX, int NewY)
 {
 	SetX(NewX);
 	SetY(NewY);
+	ProcessTime = 500;
+	ElaspedTime = 0;
+	LoadBmp("Data/Slime.bmp");
 }
 
 AMonster::AMonster(int NewX, int NewY, char NewShape)
@@ -27,6 +35,9 @@ AMonster::AMonster(int NewX, int NewY, char NewShape)
 	SetX(NewX);
 	SetY(NewY);
 	Shape = NewShape;
+	ProcessTime = 500;
+	ElaspedTime = 0;
+	LoadBmp("Data/Slime.bmp");
 }
 
 AMonster::AMonster(int NewX, int NewY, char NewShape, int NewSortOrder)
@@ -35,15 +46,24 @@ AMonster::AMonster(int NewX, int NewY, char NewShape, int NewSortOrder)
 	SetY(NewY);
 	Shape = NewShape;
 	SetSortOrder(NewSortOrder);
+	ProcessTime = 500;
+	ElaspedTime = 0;
+	LoadBmp("Data/Slime.bmp");
 }
 
-AMonster::AMonster(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide)
+
+AMonster::AMonster(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide, SDL_Color NewColor, Uint8 size)
 {
 	SetX(NewX);
 	SetY(NewY);
 	Shape = NewShape;
-	SortOrder = NewSortOrder;
+	SetSortOrder(NewSortOrder);
 	SetCollide(NewbCollide);
+	color = NewColor;
+	Size = size;
+	ProcessTime = 500;
+	ElaspedTime = 0;
+	LoadBmp("Data/Slime.bmp");
 }
 
 AMonster::~AMonster()
@@ -54,6 +74,16 @@ void AMonster::Tick()
 {
 	AActor::Tick();
 	//random 4 direction,
+	ElaspedTime += GENGINE->GetWorldDeltaSecons();
+	if (ElaspedTime <= ProcessTime)
+	{
+		return;
+	}
+	else
+	{
+		ElaspedTime = 0;
+	}
+
 	for (const auto& Actor : GENGINE->GetWorld()->GetAllactors())
 	{
 		APlayer* MyPlayer = dynamic_cast<APlayer*>(Actor);

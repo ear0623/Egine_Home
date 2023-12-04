@@ -37,11 +37,32 @@ void FSimpleEngine::Run()
 {
 	while (bIsRunning)
 	{
-		SDL_PollEvent(&MyEvent);
+		
+		DeltaSeconds = SDL_GetTicks64() - LastTime;
+		LastTime = SDL_GetTicks64();
+		
 		input();
+		switch (MyEvent.type)
+		{
+		case SDL_QUIT:
+			bIsRunning = false;
+			break;
+
+		case SDL_KEYDOWN:
+			
+			if (MyEvent.key.keysym.sym == SDLK_ESCAPE)
+			{
+				bIsRunning = false;
+			}
+			break;
+
+		}
+		
 		Tick();
-		system("cls");
+		SDL_SetRenderDrawColor(GENGINE->MyRenderer, 0, 0, 0, 0);
+		SDL_RenderClear(GENGINE->MyRenderer);
 		Render();
+		SDL_RenderPresent(GENGINE->MyRenderer);
 	}
 }
 
@@ -91,7 +112,8 @@ void FSimpleEngine::LoadLevel(std::string FileName)
 
 void FSimpleEngine::input()
 {
-	KeyCode = MyEvent.key.keysym.sym;
+	//KeyCode = MyEvent.key.keysym.sym;
+	SDL_PollEvent(&MyEvent);
 }
 
 void FSimpleEngine::Tick()
@@ -108,7 +130,7 @@ void FSimpleEngine::LoadActor(int NewX, int NewY, char Actor)
 {
 	if (Actor == '*')
 	{
-		GetWorld()->SpawnActor(new AWall(NewX, NewY, '*', 100, true));
+		GetWorld()->SpawnActor(new AWall(NewX, NewY, 1, 100, true));
 	}
 	else if (Actor == ' ')
 	{
@@ -137,7 +159,7 @@ FSimpleEngine::FSimpleEngine()
 	GameState = nullptr;
 	
 	SDL_Init(SDL_INIT_EVERYTHING);
-	MyWindow = SDL_CreateWindow("Hellow World", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
+	MyWindow = SDL_CreateWindow("Hellow World", 200, 200, 1500, 600, SDL_WINDOW_OPENGL);
 	MyRenderer = SDL_CreateRenderer(MyWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 	Init();
 }
