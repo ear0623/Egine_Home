@@ -27,7 +27,12 @@ void UWorld::Tick()
 {
 	for (const auto& Actor : Actors)
 	{
-		Actor->Tick();
+		
+		if (Actor)
+		{
+			Actor->Tick();
+		}
+		
 	}
 }
 

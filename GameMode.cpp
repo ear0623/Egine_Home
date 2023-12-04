@@ -23,7 +23,8 @@ void AGameMode::Tick()
 	if (FSimpleEngine::GetGamestate()->IsNextLevel)
 	{
 		std::cout << "Complete" << std::endl;
-		GENGINE->Stop();
+		//GENGINE->Stop();
+		GENGINE->LoadLevel("Data/Level02.smap");
 	}
 	if (FSimpleEngine::GetGamestate()->IsGameOver)
 	{

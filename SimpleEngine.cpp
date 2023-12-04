@@ -10,6 +10,8 @@
 #include <iostream>
 #include "GameMode.h"
 #include "GameState.h"
+#include <iostream>
+#include <fstream>
 
 FSimpleEngine* FSimpleEngine::Instance = nullptr;
 int FSimpleEngine::KeyCode = 0;
@@ -17,6 +19,11 @@ int FSimpleEngine::KeyCode = 0;
 FSimpleEngine::~FSimpleEngine()
 {
 	Term();
+	SDL_DestroyRenderer(MyRenderer);
+	SDL_DestroyWindow(MyWindow);
+	SDL_Quit();
+
+
 }
 
 void FSimpleEngine::Init()
@@ -30,6 +37,7 @@ void FSimpleEngine::Run()
 {
 	while (bIsRunning)
 	{
+		SDL_PollEvent(&MyEvent);
 		input();
 		Tick();
 		system("cls");
@@ -53,51 +61,26 @@ void FSimpleEngine::Term()
 
 void FSimpleEngine::LoadLevel(std::string FileName)
 {
-	
-	std::string Map[10] = {
-			"****************",
-			"*P				*",
-			"*				*",
-			"*				*",
-			"*     M		*",
-			"*				*",
-			"*				*",
-			"*       G		*",
-			"* M			*",
-			"****************"
-	};
-	
-	
-	
-	for (int Y = 0; Y < 10; ++Y)
+	int Y = 0;
+	std::string line;
+	std::ifstream file(FileName); // example.txt 파일을 연다. 없으면 생성. 
+	if (file.is_open())
 	{
-		for (int X = 0; X < Map[Y].length(); ++X)
+		while (getline(file, line))
 		{
-			if (Map[Y][X] == '*')
+			for (int X = 0; X < line.length(); X++)
 			{
-				GetWorld()->SpawnActor(new AWall(X, Y, '*', 100, true));
+				LoadActor(X,Y , line[X]);
 			}
-			else if (Map[Y][X] == ' ')
-			{
-				GetWorld()->SpawnActor(new AFloar(X, Y, ' ', 0, false));
-				//floor
-			}
-			else if (Map[Y][X] == 'P')
-			{
-				GetWorld()->SpawnActor(new APlayer(X, Y,'P',500, false));
-			}
-			else if (Map[Y][X] == 'M')
-			{
-				GetWorld()->SpawnActor(new AMonster(X, Y,'M',400,false));
-				//fllor
-			}
-			else if (Map[Y][X] == 'G')
-			{
-				GetWorld()->SpawnActor(new AGoal(X, Y,'G',300,false));
-				//floor
-			}
+			Y++;
 		}
+		file.close(); // 열었떤 파일을 닫는다. 
 	}
+	else 
+	{
+		Stop();
+	}
+	
 	GetWorld()->SortRenderOrder();
 
 	GameMode = new AGameMode();
@@ -108,7 +91,7 @@ void FSimpleEngine::LoadLevel(std::string FileName)
 
 void FSimpleEngine::input()
 {
-	KeyCode = _getch();
+	KeyCode = MyEvent.key.keysym.sym;
 }
 
 void FSimpleEngine::Tick()
@@ -121,9 +104,40 @@ void FSimpleEngine::Render()
 	GetWorld()->Render();
 }
 
+void FSimpleEngine::LoadActor(int NewX, int NewY, char Actor)
+{
+	if (Actor == '*')
+	{
+		GetWorld()->SpawnActor(new AWall(NewX, NewY, '*', 100, true));
+	}
+	else if (Actor == ' ')
+	{
+		GetWorld()->SpawnActor(new AFloar(NewX, NewY, ' ', 0, false));
+		//floor
+	}
+	else if (Actor == 'P')
+	{
+		GetWorld()->SpawnActor(new APlayer(NewX, NewY, 'P', 500, false));
+	}
+	else if (Actor == 'M')
+	{
+		GetWorld()->SpawnActor(new AMonster(NewX, NewY, 'M', 400, false));
+		//fllor
+	}
+	else if (Actor == 'G')
+	{
+		GetWorld()->SpawnActor(new AGoal(NewX, NewY, 'G', 300, false));
+		//floor
+	}
+}
+
 FSimpleEngine::FSimpleEngine()
 {
 	GameMode = nullptr;
 	GameState = nullptr;
+	
+	SDL_Init(SDL_INIT_EVERYTHING);
+	MyWindow = SDL_CreateWindow("Hellow World", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
+	MyRenderer = SDL_CreateRenderer(MyWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 	Init();
 }

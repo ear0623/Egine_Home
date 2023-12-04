@@ -2,6 +2,10 @@
 
 #include<vector>
 #include<string>
+#include "SDL.h"
+
+#pragma comment(lib,"SDL2")
+#pragma comment(lib,"SDL2main")
 
 
 #define GENGINE FSimpleEngine::GetInstance()
@@ -40,9 +44,16 @@ public:
 		return Instance;
 	}
 
-	static int KeyCode;
+	static SDL_Keycode KeyCode;
 	static AGameState* GetGamestate() { return GetInstance()->GameState; }
 	static AGameMode* GetGameMode() { return GetInstance()->GameMode; }
+
+	SDL_Window* MyWindow;
+	SDL_Renderer* MyRenderer;
+	SDL_Event MyEvent;
+	Uint64 DeltaSeconds;
+	Uint64 LastTime;
+
 protected:
 	bool bIsRunning;
 	UWorld* World;
@@ -53,7 +64,9 @@ protected:
 	void input();
 	void Tick();
 	void Render();
+	void LoadActor(int NewX, int NewY, char Actor);
 
+	
 private:
 	FSimpleEngine();
 };

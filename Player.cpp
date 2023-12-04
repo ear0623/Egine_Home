@@ -51,8 +51,12 @@ void APlayer::Tick()
 {
 	__super::Tick();
 	int KeyCode = FSimpleEngine::KeyCode;
+	if (FSimpleEngine::GetGamestate()->IsGameOver)
+	{
+		return;
+	}
 
-	if (KeyCode == 'A' || KeyCode == 'a')
+	if (KeyCode ==SDLK_a)
 	{
 		if (!IsCollide(X - 1, Y))
 		{
@@ -61,7 +65,7 @@ void APlayer::Tick()
 
 
 	}
-	if (KeyCode == 'D' || KeyCode == 'd')
+	if (KeyCode == SDLK_d)
 	{
 		if (!IsCollide(X + 1, Y))
 		{
@@ -69,7 +73,7 @@ void APlayer::Tick()
 		}
 		
 	}
-	if (KeyCode == 'S' || KeyCode == 's')
+	if (KeyCode==SDLK_s)
 	{
 
 		if (!IsCollide(X, Y + 1))
@@ -77,7 +81,7 @@ void APlayer::Tick()
 			Y++;
 		}
 	}
-	if (KeyCode == 'W' || KeyCode == 'w')
+	if (KeyCode == SDLK_w)
 	{
 		if (!IsCollide(X, Y - 1))
 		{

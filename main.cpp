@@ -1,11 +1,14 @@
 #include "SimpleEngine.h"
-#include "string"
+#include <iostream>
+#include <fstream>
 
-int main()
+
+int SDL_main(int argc,char* argv[])
 {
+	
 	FSimpleEngine* MyEngine = FSimpleEngine::GetInstance();
 
-	MyEngine->LoadLevel("a.map");
+	MyEngine->LoadLevel("Data/Level01.smap");
 	MyEngine->Run();
 
 	delete MyEngine;
