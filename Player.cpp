@@ -17,6 +17,10 @@ APlayer::APlayer()
 	bIsSprite = true;
 	SprintSizeX = 5;
 	SprintSizeY = 5;
+	SprintIndex=0;
+	SprintDeirection=0;
+	ElaspedTime = 0;
+	ProcessTime = 400;
 }
 
 APlayer::APlayer(int NewX, int NewY)
@@ -27,6 +31,10 @@ APlayer::APlayer(int NewX, int NewY)
 	bIsSprite = true;
 	SprintSizeX = 5;
 	SprintSizeY = 5;
+	SprintIndex = 0;
+	SprintDeirection = 0;
+	ElaspedTime = 0;
+	ProcessTime = 400;
 }
 
 APlayer::APlayer(int NewX, int NewY, char NewShape)
@@ -38,6 +46,10 @@ APlayer::APlayer(int NewX, int NewY, char NewShape)
 	bIsSprite = true;
 	SprintSizeX = 5;
 	SprintSizeY = 5;
+	SprintIndex = 0;
+	SprintDeirection = 0;
+	ElaspedTime = 0;
+	ProcessTime = 400;
 }
 
 APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder)
@@ -50,6 +62,10 @@ APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder)
 	bIsSprite = true;
 	SprintSizeX = 5;
 	SprintSizeY = 5;
+	SprintIndex = 0;
+	SprintDeirection = 0;
+	ElaspedTime = 0;
+	ProcessTime = 400;
 }
 
 APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbCollide, SDL_Color NewColor, Uint8 size)
@@ -65,6 +81,10 @@ APlayer::APlayer(int NewX, int NewY, char NewShape, int NewSortOrder, bool NewbC
 	bIsSprite = true;
 	SprintSizeX = 5;
 	SprintSizeY = 5;
+	SprintIndex = 0;
+	SprintDeirection = 0;
+	ElaspedTime = 0;
+	ProcessTime = 400;
 }
 
 APlayer::~APlayer()
@@ -74,6 +94,16 @@ APlayer::~APlayer()
 void APlayer::Tick()
 {
 	__super::Tick();
+
+	ElaspedTime += GENGINE->GetWorldDeltaSecons();
+	if (ElaspedTime >= ProcessTime)
+	{
+		SprintIndex++;
+		SprintIndex = SprintIndex % SprintSizeX;
+		ElaspedTime = 0;
+
+	}
+
 	int KeyCode = GENGINE->MyEvent.key.keysym.sym;
 	//KeyCode = MyEvent.key.keysym.sym;
 	if (GENGINE->MyEvent.type == SDL_KEYDOWN)
@@ -89,6 +119,7 @@ void APlayer::Tick()
 	{
 		if (!IsCollide(X - 1, Y))
 		{
+			SprintDeirection = 0;
 			X--;
 		}
 
@@ -98,6 +129,7 @@ void APlayer::Tick()
 	{
 		if (!IsCollide(X + 1, Y))
 		{
+			SprintDeirection = 1;
 			X++;
 		}
 		
@@ -107,6 +139,7 @@ void APlayer::Tick()
 
 		if (!IsCollide(X, Y + 1))
 		{
+			SprintDeirection = 3;
 			Y++;
 		}
 	}
@@ -114,6 +147,7 @@ void APlayer::Tick()
 	{
 		if (!IsCollide(X, Y - 1))
 		{
+			SprintDeirection = 2;
 			Y--;
 		}
 
@@ -128,6 +162,22 @@ void APlayer::Tick()
 			FSimpleEngine::GetGamestate()->IsNextLevel = true;
 		}
 	}
+}
+
+void APlayer::Render()
+{
+	__super::Render();
+	
+	//std::cout << Shape;
+	
+	
+	int SprintWidth = MySurface->w / SprintSizeX;
+	int SprintHeight = MySurface->h / SprintSizeY;
+	int StartX = SprintIndex * SprintWidth;
+	int StartY = SprintDeirection * SprintHeight;
+	
+	SDL_RenderCopy(GENGINE->MyRenderer, MyTexture, new SDL_Rect{ StartX,StartY,SprintWidth,SprintHeight }, new SDL_Rect{ X * Size,Y * Size,Size,Size });
+	
 }
 
 bool APlayer::IsCollide(int NewX, int NewY)

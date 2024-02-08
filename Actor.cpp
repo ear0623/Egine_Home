@@ -103,17 +103,17 @@ void AActor::Render()
 	//vran->screen(in vram)
 	if (bIsSprite)
 	{
-		animation++;
-		animation = animation >= SprintSizeX ? animation - SprintSizeX : animation;
+		//animation++;
+		//animation = animation >= SprintSizeX ? animation - SprintSizeX : animation;
+		// MySurface->w / SprintSizeX * animation
 
-
-		SDL_RenderCopy(GENGINE->MyRenderer, MyTexture, new SDL_Rect{ MySurface->w / SprintSizeX * animation,0,MySurface->w / SprintSizeX,MySurface->h / SprintSizeY}, new SDL_Rect{ X * Size,Y * Size,Size,Size });
+		//SDL_RenderCopy(GENGINE->MyRenderer, MyTexture, new SDL_Rect{0,0,MySurface->w / SprintSizeX,MySurface->h / SprintSizeY}, new SDL_Rect{ X * Size,Y * Size,Size,Size });
 	}
 	else
 	{
 		SDL_RenderCopy(GENGINE->MyRenderer, MyTexture, nullptr, new SDL_Rect{ X * Size,Y * Size,Size,Size });
 	}
-	}
+}
 	
 
 void AActor::LoadBmp(std::string FileName,SDL_Color ColorKey)

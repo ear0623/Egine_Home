@@ -16,9 +16,15 @@ public:
 	~APlayer();
 
 	virtual void Tick() override;
+	virtual void Render()override;
 	bool IsCollide(int NewX, int NewY);
 
-	
+	Uint64 ProcessTime;
+
+	Uint64 ElaspedTime;//경과시간
+
+	Uint8 SprintIndex;
+	Uint8 SprintDeirection;
 protected:
 	
 private:
